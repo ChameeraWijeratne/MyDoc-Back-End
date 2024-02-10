@@ -12,10 +12,4 @@ public class MydocApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MydocApplication.class, args);
 	}
-
-	@GetMapping
-	public String apiRoot(){
-		return "Welcome to MyDoc";
-	}
-
 }
