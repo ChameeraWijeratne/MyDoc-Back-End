@@ -6,25 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-
-
-
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api/v1/doctor")
 public class DoctorController {
 
-    private static final String FILE_STORAGE_DIRECTORY = "C:\\Users\\Chameera\\Downloads";
 
     @Autowired
     private DoctorServices doctorServices;
@@ -40,23 +27,6 @@ public class DoctorController {
         } catch (Exception e) {
             return new ResponseEntity<>("Error creating doctor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @Autowired
-    private GridFsTemplate gridFsTemplate;
-    // Utility method to save the image and return the file path
-    private String saveImage(MultipartFile file) throws IOException {
-        if (file != null && !file.isEmpty()) {
-            InputStream inputStream = file.getInputStream();
-            String fileName = file.getOriginalFilename();
-
-            Path targetPath = Paths.get(FILE_STORAGE_DIRECTORY, fileName);
-            Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Return the file path
-            return targetPath.toString();
-        }
-        return null;
     }
 
     @GetMapping(value = "/getAll")
