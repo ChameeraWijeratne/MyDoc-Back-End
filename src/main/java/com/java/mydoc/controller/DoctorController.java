@@ -8,10 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/v1/doctor")
 public class DoctorController {
-
 
     @Autowired
     private DoctorServices doctorServices;
@@ -30,8 +29,8 @@ public class DoctorController {
     }
 
     @GetMapping(value = "/getAll")
-    private Iterable<Doctor>getDoctors(){
-        return doctorServices.listAll();
+    private Iterable<Doctor> getDoctors(){
+        return doctorServices.listAllDocs();
     }
 
     @PutMapping(value = "/edit/{id}")
@@ -39,6 +38,21 @@ public class DoctorController {
         doctor.set_id(_id);
         doctorServices.saveorUpdate(doctor);
         return doctor;
+    }
+
+    @PostMapping(value ="/activate/{id}")
+    public ResponseEntity<String> activateDoctor(@PathVariable(name="id") String _id) {
+        try {
+            Doctor doctor = doctorServices.getUserById(_id);
+            if (doctor == null) {
+                return ResponseEntity.notFound().build();
+            }
+            doctor.setActivate(true); // Assuming isActive is a boolean field
+            doctorServices.saveorUpdate(doctor); // Save the updated Doctor entity
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error activating doctor: " + e.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/delete/{id}")

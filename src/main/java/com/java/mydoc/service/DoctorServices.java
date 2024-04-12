@@ -13,7 +13,7 @@ public class DoctorServices {
         repo.save(doctors);
     }
 
-    public Iterable<Doctor> listAll() {
+    public Iterable<Doctor> listAllDocs() {
         return this.repo.findAll();
     }
 
