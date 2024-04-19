@@ -1,9 +1,14 @@
 package com.java.mydoc.controller;
 
+import com.java.mydoc.entity.Doctor;
+import com.java.mydoc.entity.LoginRequest;
 import com.java.mydoc.entity.User;
 import com.java.mydoc.service.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,5 +44,20 @@ public class UserController {
     private User getUsers(@PathVariable(name="id")String userId){
 
         return userServices.getUserById(userId);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+
+        List<User> users = userServices.findAllByEmail(email);
+
+        for (User user : users) {
+            if (user.getPassword().equals(password)) {
+                return ResponseEntity.ok("Login successful");
+            }
+        }
+        return ResponseEntity.badRequest().body("Invalid email or password");
     }
 }

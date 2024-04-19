@@ -5,6 +5,8 @@ import com.java.mydoc.repository.DoctorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorServices {
     @Autowired
@@ -23,5 +25,16 @@ public class DoctorServices {
 
     public Doctor getUserById(String doctorId) {
         return repo.findById(doctorId).get();
+    }
+
+    public List<Doctor>  findAllByEmail(String email) {
+        // Find doctor by email
+        List<Doctor> doctors = repo.findAllByEmail(email);
+        if (doctors == null) {
+            // Doctor not found
+            return null;
+        }
+        // Authentication successful
+        return doctors;
     }
 }
