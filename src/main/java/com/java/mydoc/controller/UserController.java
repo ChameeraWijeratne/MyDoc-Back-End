@@ -1,6 +1,5 @@
 package com.java.mydoc.controller;
 
-import com.java.mydoc.entity.Doctor;
 import com.java.mydoc.entity.LoginRequest;
 import com.java.mydoc.entity.User;
 import com.java.mydoc.service.UserServices;
@@ -60,4 +59,11 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("Invalid email or password");
     }
+
+    @RequestMapping(value = "/searchUserByEmail/{email}")
+    private String getUserIdByLogin(@PathVariable(name="email") String email) {
+
+        return userServices.getUserIdByEmailAndPassword(email);
+    }
+
 }

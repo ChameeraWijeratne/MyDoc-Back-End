@@ -2,6 +2,7 @@ package com.java.mydoc.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Document(collection = "doctor")
 public class Doctor {
@@ -17,6 +18,7 @@ public class Doctor {
     private String addressLine2;
     private String city;
     private Number postalCode;
+    @Indexed(unique = true)
     private String email;
     private Number contactNumber;
     private String mbbsId;

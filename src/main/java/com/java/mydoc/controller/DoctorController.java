@@ -84,4 +84,9 @@ public class DoctorController {
         return ResponseEntity.badRequest().body("Invalid email or password");
     }
 
+    @RequestMapping(value = "/searchDoctorByEmail/{email}")
+    private String getUserIdByLogin(@PathVariable(name="email") String email) {
+
+        return doctorServices.getDoctorIdByEmailAndPassword(email);
+    }
 }

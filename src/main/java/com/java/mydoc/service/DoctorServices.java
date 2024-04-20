@@ -37,4 +37,17 @@ public class DoctorServices {
         // Authentication successful
         return doctors;
     }
+
+    public String getDoctorIdByEmailAndPassword(String email) {
+        // Find user by email
+        Doctor doctor = repo.findByEmail(email);
+
+        if (doctor != null) {
+                return doctor.get_id();
+
+        }
+
+        // Return null if user not found or password doesn't match
+        return null;
+    }
 }

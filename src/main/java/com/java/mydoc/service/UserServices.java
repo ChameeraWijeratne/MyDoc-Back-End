@@ -37,4 +37,17 @@ public class UserServices {
         // Authentication successful
         return users;
     }
+
+    public String getUserIdByEmailAndPassword(String email) {
+        // Find user by email
+        User user = repo.findByEmail(email);
+
+        if (user != null) {
+                return user.get_id();
+
+        }
+
+        // Return null if user not found or password doesn't match
+        return null;
+    }
 }
