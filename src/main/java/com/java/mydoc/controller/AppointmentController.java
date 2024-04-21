@@ -1,7 +1,6 @@
 package com.java.mydoc.controller;
 
 import com.java.mydoc.entity.Appointment;
-import com.java.mydoc.entity.Doctor;
 import com.java.mydoc.service.AppointmentServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/appointment")
 public class AppointmentController {
 
@@ -84,8 +83,8 @@ public class AppointmentController {
     @GetMapping("/getIndex")
     public ResponseEntity<Integer> getAppointmentIndex(
             @RequestParam("Id") String Id,
+            @RequestParam("docId") String docId,
             @RequestParam("userId") String userId,
-            @RequestParam("userId") String docId,
             @RequestParam("appointmentDate") String appointmentDate,
             @RequestParam("appointmentTime") String appointmentTime) {
         try {
@@ -103,10 +102,10 @@ public class AppointmentController {
                 }
             }
             // If no matching appointment found, return not found status
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(0);
         } catch (Exception e) {
             // Return an error response if something goes wrong
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.ok(-1);
         }
     }
 }

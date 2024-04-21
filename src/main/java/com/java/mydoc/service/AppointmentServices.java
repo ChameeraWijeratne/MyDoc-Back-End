@@ -53,6 +53,6 @@ public class AppointmentServices {
     }
 
     public List<Appointment> getAppointmentByDocIdAndDateTime(String docId, String appointmentDate, String appointmentTime) {
-        return repo.findByUserIdAndAppointmentDateAndAppointmentTime(docId, appointmentDate, appointmentTime);
+        return repo.findByDocIdAndAppointmentDateAndAppointmentTime(docId, appointmentDate, appointmentTime);
     }
 }

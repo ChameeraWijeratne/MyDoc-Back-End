@@ -10,5 +10,5 @@ public interface AppointmentRepo extends MongoRepository<Appointment, String> {
 
     List<Appointment> findByDocId(String docId);
 
-    List<Appointment> findByUserIdAndAppointmentDateAndAppointmentTime(String docId, String appointmentDate, String appointmentTime);
+    List<Appointment> findByDocIdAndAppointmentDateAndAppointmentTime(String docId,String appointmentDate, String appointmentTime);
 }
