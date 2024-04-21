@@ -1,10 +1,15 @@
 package com.java.mydoc.controller;
 
 import com.java.mydoc.entity.Appointment;
+import com.java.mydoc.entity.Doctor;
 import com.java.mydoc.service.AppointmentServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -44,8 +49,64 @@ public class AppointmentController {
     }
 
     @RequestMapping(value = "/searchUser/{userId}")
-    private Appointment getUsers(@PathVariable(name="userId")String userId){
+    private List<Appointment> getUsers(@PathVariable(name="userId")String userId){
 
         return appointmentServices.getAppointmentByUserId(userId);
+    }
+
+    @PutMapping(value = "/editRating/{id}")
+    public ResponseEntity<String> updateAppointmentRating(@PathVariable("id") String id,
+                                                                @RequestBody int rating) {
+        try {
+            Appointment appointment = appointmentServices.getAppointmentById(id);
+
+            appointment.setRating(rating); // Assuming isActive is a boolean field
+            appointmentServices.saveorUpdate(appointment);
+
+            // Return a success response
+            return ResponseEntity.ok("Appointment rating updated successfully");
+        } catch (Exception e) {
+            // Return an error response if something goes wrong
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update appointment rating");
+        }
+    }
+
+    @GetMapping("/averageRating/{docId}")
+    public ResponseEntity<Double> calculateAverageRatingByDocId(@PathVariable("docId") String docId) {
+        try {
+            double averageRating = appointmentServices.calculateAverageRatingByDocId(docId);
+            return ResponseEntity.ok(averageRating);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getIndex")
+    public ResponseEntity<Integer> getAppointmentIndex(
+            @RequestParam("Id") String Id,
+            @RequestParam("userId") String userId,
+            @RequestParam("userId") String docId,
+            @RequestParam("appointmentDate") String appointmentDate,
+            @RequestParam("appointmentTime") String appointmentTime) {
+        try {
+            List<Appointment> appointments = appointmentServices.getAppointmentByDocIdAndDateTime(docId, appointmentDate, appointmentTime);
+
+            // Iterate through the list of appointments
+            for (int i = 0; i < appointments.size(); i++) {
+                Appointment appointment = appointments.get(i);
+                // Check if the appointment matches the provided criteria
+                if (appointment.getUserId().equals(userId) && appointment.get_id().equals(Id)
+                        && appointment.getAppointmentDate().equals(appointmentDate)
+                        && appointment.getAppointmentTime().equals(appointmentTime)) {
+                    // Return the index of the matching appointment
+                    return ResponseEntity.ok(i+1);
+                }
+            }
+            // If no matching appointment found, return not found status
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Return an error response if something goes wrong
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
