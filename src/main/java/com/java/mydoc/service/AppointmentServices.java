@@ -28,6 +28,10 @@ public class AppointmentServices {
         return repo.findById(appointmentId).get();
     }
 
+    public List<Appointment> getAppointmentBydDocId(String docId) {
+        return repo.findByDocId(docId);
+    }
+
     public List<Appointment> getAppointmentByUserId(String userId) {
         return repo.findByUserId(userId);
     }

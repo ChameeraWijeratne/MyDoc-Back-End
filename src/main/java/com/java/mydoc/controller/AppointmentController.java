@@ -53,6 +53,12 @@ public class AppointmentController {
         return appointmentServices.getAppointmentByUserId(userId);
     }
 
+    @RequestMapping(value = "/searchDocAppointments/{docId}")
+    private List<Appointment> getDocAppointmentss(@PathVariable(name="docId")String docId){
+
+        return appointmentServices.getAppointmentBydDocId(docId);
+    }
+
     @PutMapping(value = "/editRating/{id}")
     public ResponseEntity<String> updateAppointmentRating(@PathVariable("id") String id,
                                                                 @RequestBody int rating) {
