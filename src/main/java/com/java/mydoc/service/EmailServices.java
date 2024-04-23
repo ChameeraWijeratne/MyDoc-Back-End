@@ -25,4 +25,18 @@ public class EmailServices {
             throw new RuntimeException(e);
         }
     }
+
+    public void sendAppointmentApproval(String to, String docFname, String docLname, String appDesc) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper;
+        try {
+            helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+            helper.setTo(to);
+            helper.setSubject("Doctor Account Status");
+            helper.setText("Dear Dr. " + docFname+" "+docLname+",\n\n" + appDesc+"\n\nBR,\nMyDoc Admin Team");
+            javaMailSender.send(mimeMessage);
+        } catch (jakarta.mail.MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

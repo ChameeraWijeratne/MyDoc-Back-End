@@ -20,4 +20,10 @@ public class EmailController {
         emailService.sendAppointmentConfirmation(request.getTo(), request.getDocFname(), request.getDocLname(),request.getAppNo(),request.getAppDate(),request.getAppTime(),request.getAppDesc());
         return new ResponseEntity<>("Email sent successfully", HttpStatus.OK);
     }
+
+    @PostMapping("/sendApprovalEmail")
+    public ResponseEntity<String> sendApprovalEmail(@RequestBody ConfirmMail request) {
+        emailService.sendAppointmentApproval(request.getTo(), request.getDocFname(), request.getDocLname(),request.getAppDesc());
+        return new ResponseEntity<>("Email sent successfully", HttpStatus.OK);
+    }
 }

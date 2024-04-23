@@ -58,6 +58,21 @@ public class DoctorController {
         }
     }
 
+    @PostMapping(value ="/deactivate/{id}")
+    public ResponseEntity<String> deactivateDoctor(@PathVariable(name="id") String _id) {
+        try {
+            Doctor doctor = doctorServices.getUserById(_id);
+            if (doctor == null) {
+                return ResponseEntity.notFound().build();
+            }
+            doctor.setActivate(false); 
+            doctorServices.saveorUpdate(doctor); // Save the updated Doctor entity
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error activating doctor: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping(value = "/delete/{id}")
     private void deleteDoctor(@PathVariable("id")String _id){
         doctorServices.deleteDoctor(_id);
